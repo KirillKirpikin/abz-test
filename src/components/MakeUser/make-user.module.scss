@@ -1,0 +1,22 @@
+.radio{
+    button{
+        span{
+            @apply border-[#00BDD3] relative  border-solid border-[2px] inline-block w-[20px] h-[20px] rounded-full;
+
+            &::after{
+                content: '';
+                @apply w-[10px] h-[10px] opacity-0 block absolute bg-[#00BDD3] rounded-full top-[50%] transition-all duration-300;
+            }
+        }
+    }
+}
+
+.radio_active{
+    button{
+        span{
+            &::after{
+                @apply  opacity-100 ;
+            }
+        }
+    }
+}

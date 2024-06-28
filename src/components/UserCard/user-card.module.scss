@@ -1,0 +1,12 @@
+.card{
+    @apply flex flex-col justify-center items-center bg-[#FFF] rounded-[16px] p-[20px]; 
+    .img{
+        @apply rounded-[70px] overflow-hidden mb-[20px];
+    }
+    h3{
+        @apply mb-[20px];
+    }
+    .content{
+        @apply flex flex-col justify-center items-center;
+    }
+}

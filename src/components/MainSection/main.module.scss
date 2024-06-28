@@ -1,0 +1,18 @@
+.main{
+
+    .container{
+        @apply  bg-center bg-[url('../../assets/bg.png')] mx-auto max-w-[1170px] h-[500px] md:h-[600px] flex items-center justify-center;
+        .text{
+            @apply max-w-[380px] mx-4;
+            h1{
+                @apply text-center font-[400] text-[40px] leading-[40px] text-white mb-[21px];
+            }
+            h2{
+                @apply text-center text-white font-[400] leading-[26px] text-[16px];
+            }  
+        }
+        .btn{
+            @apply flex justify-center mt-[32px];
+        }
+    }
+}

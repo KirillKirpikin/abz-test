@@ -1,0 +1,18 @@
+.header{
+    @apply mx-4 my-[13px];
+    .container{
+        @apply mx-auto max-w-[1170px] flex justify-between items-center;
+    }
+    .logo{
+        @apply mr-[14px];
+    }
+    .btns{
+        @apply flex gap-[10px];
+        button{
+            @apply bg-[#F4E041] text-[16px] w-[100px] rounded-[80px] h-[34px] transition-all duration-300 ;
+            &:hover{
+                @apply bg-[#FFE302];
+            }
+        }
+    }
+}

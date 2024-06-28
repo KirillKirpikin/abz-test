@@ -1,0 +1,26 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #F8F8F8;
+  font-family: 'Nunito';
+  line-height: normal;  
+  font-weight: 400;
+  line-height: 26px;
+  font-size: 16px;
+  color: #000;
+}
+
+.btn_standart{
+    @apply bg-[#F4E041] text-[16px] w-[100px] rounded-[80px] h-[34px] transition-all duration-300 ;
+    &:hover{
+      @apply bg-[#FFE302];
+    }
+    &:disabled{
+      @apply bg-[#B4B4B4] text-white;
+    }
+}

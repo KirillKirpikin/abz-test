@@ -1,0 +1,11 @@
+.tool{
+    @apply relative cursor-pointer transition-all duration-300;
+    span{
+        @apply max-md:left-[-10px] max-md:max-w-[290px] hidden absolute whitespace-pre-wrap break-words rounded px-[16px] bg-black text-white mt-6 transition-all duration-300  
+    }
+    &:hover{
+        span{
+            @apply block z-50;
+        }
+    }
+}
