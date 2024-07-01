@@ -1,0 +1,17 @@
+.file {
+    @apply flex w-full items-center rounded-[4px];
+}
+
+.label {
+    @apply flex cursor-pointer items-center justify-center rounded-l-[4px] border-[1px] border-solid border-black px-[15px] py-[14px] text-[16px] font-normal transition-all duration-200;
+}
+.name_file {
+    @apply w-full rounded-r-[4px] border-y-[1px] border-r-[1px] border-solid border-[#D0CFCF] px-[16px] py-[14px];
+}
+.input {
+    @apply invisible m-0 h-0 w-0 p-0;
+}
+
+.max {
+    @apply absolute left-[78px] top-[57px] w-[400%] text-[20px] text-red-700;
+}

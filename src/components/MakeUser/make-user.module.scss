@@ -1,21 +1,51 @@
-.radio{
-    button{
-        span{
-            @apply border-[#00BDD3] relative  border-solid border-[2px] inline-block w-[20px] h-[20px] rounded-full;
+.form {
+    @apply mx-auto max-w-[380px];
 
-            &::after{
+    .input {
+        @apply relative w-full;
+        .placeholder {
+            @apply absolute left-[14px] top-[-12px] bg-[#F8F8F8] px-1 text-[14px] text-[#7E7E7E] opacity-0 transition-all duration-150;
+        }
+
+        .placeholder_active {
+            @apply opacity-100;
+        }
+        input {
+            @apply mb-[50px] w-full rounded-[4px] border-[1px] border-solid border-[#D0CFCF] bg-[#F8F8F8] py-[14px] pl-[16px] text-[16px] font-normal text-[#404040] outline-none;
+
+            &::placeholder {
+                @apply text-[16px] font-normal text-[#7E7E7E];
+            }
+        }
+
+        .error {
+            @apply absolute left-0 top-[92px] text-[16px] text-red-600;
+        }
+    }
+    h4 {
+        @apply mb-[11px] text-[16px] text-black;
+    }
+}
+
+.radio {
+    button {
+        @apply mb-[7px] flex items-center;
+        span {
+            @apply relative mr-[12px] inline-block h-[20px] w-[20px] rounded-full border-[2px] border-solid border-[#00BDD3] text-base;
+
+            &::after {
                 content: '';
-                @apply w-[10px] h-[10px] opacity-0 block absolute bg-[#00BDD3] rounded-full top-[50%] transition-all duration-300;
+                @apply m-[3px] block h-[10px] w-[10px] rounded-full bg-[#00BDD3] opacity-0 transition-all duration-300;
             }
         }
     }
 }
 
-.radio_active{
-    button{
-        span{
-            &::after{
-                @apply  opacity-100 ;
+.radio_active {
+    button {
+        span {
+            &::after {
+                @apply opacity-100;
             }
         }
     }
