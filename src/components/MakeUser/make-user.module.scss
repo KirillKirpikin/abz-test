@@ -19,11 +19,21 @@
         }
 
         .error {
-            @apply absolute left-0 top-[92px] text-[16px] text-red-600;
+            @apply absolute left-[16px] top-[57px] text-[16px] text-[#CB3D40];
         }
     }
+
     h4 {
         @apply mb-[11px] text-[16px] text-black;
+    }
+
+    .input_error {
+        input {
+            @apply border-[2px] border-[#CB3D40];
+        }
+        .placeholder_active {
+            @apply text-[#CB3D40];
+        }
     }
 }
 

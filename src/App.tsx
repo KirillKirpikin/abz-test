@@ -1,38 +1,26 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
-import axios from 'axios';
-import { IToken } from 'types/token.type';
+import { useRef } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 
-const getToken = async () => {
-    return axios.get<IToken>(
-        'https://frontend-test-assignment-api.abz.agency/api/v1/token',
-    );
-};
+import { useGetToken } from '@hooks/useGetToken';
 
 function App() {
-    const { data } = useQuery({
-        queryKey: ['token'],
-        queryFn: getToken,
-    });
-
-    useEffect(() => {
-        if (data && data.data.success) {
-            localStorage.setItem('token-abz', data.data.token);
-        }
-    }, [data]);
+    useGetToken();
+    const listUserRef = useRef<HTMLDivElement>(null);
+    const makeUserRef = useRef<HTMLDivElement>(null);
 
     return (
         <div className="flex min-h-screen flex-col">
-            <Header />
+            <Header refs={{ listUserRef, makeUserRef }} />
             <main className="flex-grow">
-                <HomePage />
+                <HomePage refs={{ listUserRef, makeUserRef }} />
             </main>
             <Footer />
+            <ToastContainer />
         </div>
     );
 }

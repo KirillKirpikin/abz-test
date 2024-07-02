@@ -1,88 +1,57 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import axios, { isAxiosError } from 'axios';
-
 import styles from './make-user.module.scss';
 
-import { IDataPositions } from '../../types/position.type';
 import { IMakeUser } from '../../types/user.type';
 
 import FileUpload from '@components/FileUpload';
 
-const getPosition = async () => {
-    return axios.get<IDataPositions>(
-        `https://frontend-test-assignment-api.abz.agency/api/v1/positions`,
-    );
-};
+import { useAddUser } from '@hooks/useAddUser';
+import { useGetPosition } from '@hooks/useGetPosition';
 
-const MakeUser = () => {
+import { scrollTo } from '@utils/scrollTo';
+
+const MakeUser = ({ refTo }: { refTo: React.RefObject<HTMLDivElement> }) => {
     const {
         register,
         handleSubmit,
         formState: { errors, isValid },
         control,
         setValue,
-        reset,
+        setError,
         watch,
-    } = useForm<IMakeUser>();
+    } = useForm<IMakeUser>({ mode: 'all' });
     const [radio, setRadio] = useState<string | null>(null);
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-    const queryClient = useQueryClient();
-
-    const { data, isSuccess, isLoading } = useQuery({
-        queryKey: ['position'],
-        queryFn: getPosition,
-        select: (data) => data.data,
-    });
+    const { data, isSuccess, isLoading } = useGetPosition();
 
     const labelPreload = (name: 'name' | 'email' | 'phone') => {
         return watch(name) !== undefined && watch(name).length > 0;
     };
 
-    const { mutate } = useMutation({
-        mutationKey: ['add user'],
-        mutationFn: async (newUser: FormData) =>
-            axios.post(
-                'https://frontend-test-assignment-api.abz.agency/api/v1/users',
-                newUser,
-                {
-                    headers: {
-                        'Content-Type': 'multiparte/form-data',
-                        Authorization: `Bearer ${localStorage.getItem('token-abz')}`,
-                    },
-                },
-            ),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users', 'token'] });
-            alert('Okey');
-            reset();
-        },
-        onError(error) {
-            if (isAxiosError(error)) {
-                console.log(error.response?.data?.message);
-                queryClient.invalidateQueries({ queryKey: ['token'] });
-            }
-        },
-    });
+    const addUser = useAddUser(setError);
 
-    const onSubmit: SubmitHandler<IMakeUser> = (data) => {
-        if (selectedFiles.length < 1) {
-            return alert('Додайте фотографію');
-        }
+    const onSubmit: SubmitHandler<IMakeUser> = (dataForm) => {
         const formData = new FormData();
-        formData.append('name', data.name);
-        formData.append('email', data.email);
-        formData.append('phone', data.phone);
-        formData.append('position_id', data.position_id);
-        formData.append('photo', selectedFiles[0]);
-        mutate(formData);
+        formData.append('name', dataForm.name);
+        formData.append('email', dataForm.email);
+        formData.append('phone', dataForm.phone);
+        formData.append('position_id', dataForm.position_id);
+        formData.append('photo', dataForm.photo[0]);
+        addUser.mutate(formData, {
+            onSuccess() {
+                setValue('email', '');
+                setValue('name', '');
+                setValue('phone', '');
+                setValue('photo', []);
+                return scrollTo(refTo);
+            },
+        });
     };
 
     useEffect(() => {
-        if (isSuccess) {
+        if (isSuccess && data && data.positions) {
             setValue('position_id', data.positions[0].id);
             setRadio(data.positions[0].id);
         }
@@ -90,7 +59,7 @@ const MakeUser = () => {
     }, [isSuccess, data]);
 
     return (
-        <div className="mx-auto mt-[140px] max-w-[1170px]">
+        <div className="mx-4 mt-[140px]">
             <h2 className="title">Working with POST request</h2>
             <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.input}>
@@ -102,10 +71,14 @@ const MakeUser = () => {
 
                     <input
                         {...register('name', {
-                            required: 'Введіть дату',
+                            required: 'Enter your name',
                             minLength: {
-                                value: 3,
-                                message: 'Мінимум 3 символів',
+                                value: 2,
+                                message: 'should be 2-60 characters',
+                            },
+                            maxLength: {
+                                value: 60,
+                                message: 'should be 2-60 characters',
                             },
                         })}
                         placeholder="Your name"
@@ -117,7 +90,9 @@ const MakeUser = () => {
                         </p>
                     )}
                 </div>
-                <div className={styles.input}>
+                <div
+                    className={`${styles.input} ${errors?.email && styles.input_error}`}
+                >
                     <p
                         className={`${styles.placeholder} ${labelPreload('email') && styles.placeholder_active}`}
                     >
@@ -125,11 +100,10 @@ const MakeUser = () => {
                     </p>
                     <input
                         {...register('email', {
-                            required: 'Введіть email',
+                            required: 'Enter email',
                             pattern: {
                                 value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                message:
-                                    'email повиненн бути наприклад example@gmail.com',
+                                message: 'example@gmail.com',
                             },
                         })}
                         placeholder="Email"
@@ -150,10 +124,11 @@ const MakeUser = () => {
                     </p>
                     <input
                         {...register('phone', {
-                            required: 'Введіть дату',
-                            minLength: {
-                                value: 3,
-                                message: 'Мінимум 3 символів',
+                            required: 'Enter your phone',
+                            pattern: {
+                                value: /^\+380\d{9}$/,
+                                message:
+                                    'should start with code of Ukraine +380',
                             },
                         })}
                         placeholder="Your phone"
@@ -175,6 +150,7 @@ const MakeUser = () => {
                                 <div>Loading</div>
                             ) : (
                                 data &&
+                                data.positions &&
                                 data.positions.map((item) => (
                                     <div
                                         className={`${styles.radio} ${radio === item.id && styles.radio_active}`}
@@ -198,12 +174,18 @@ const MakeUser = () => {
                 />
 
                 <div className="items-center justify-start max-md:mb-[30px] md:flex">
-                    <FileUpload
-                        selectedFiles={selectedFiles}
-                        setSelectedFiles={setSelectedFiles}
-                        quantity={1}
+                    <Controller
+                        control={control}
+                        rules={{ required: true }}
+                        name="photo"
+                        render={({ field }) => (
+                            <FileUpload
+                                value={field.value || []}
+                                quantity={1}
+                                onChange={field.onChange}
+                            />
+                        )}
                     />
-                    {/* <p className='text-[12px] md:w-[45%] max-md:mt-[20px] md:max-w-[225px]  md:text-[13px] font-normal tracking-tight ml-[10px]'>*формат іконки має бути в SVG, розмір не біше ніж 44х44</p> */}
                 </div>
 
                 <div className="mt-[50px] flex justify-center">

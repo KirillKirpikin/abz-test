@@ -1,26 +1,9 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-
-import axios from 'axios';
-
-import { IDataUsers } from '../../types/user.type';
 import UserCard from '../UserCard';
 
+import { useGetUsers } from '@hooks/useGetUsers';
+
 const UsersSection = () => {
-    const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-        queryKey: ['users'],
-        queryFn: async ({ pageParam }) => {
-            return axios.get<IDataUsers>(
-                `https://frontend-test-assignment-api.abz.agency/api/v1/users?page=${pageParam}&count=6`,
-            );
-        },
-        initialPageParam: 1,
-        getNextPageParam: (lastPage, _allPages, lastPageParam) => {
-            if (lastPageParam === lastPage.data.total_pages) {
-                return undefined;
-            }
-            return lastPageParam + 1;
-        },
-    });
+    const { data, fetchNextPage, hasNextPage } = useGetUsers();
 
     return (
         <section className="mt-[140px]">

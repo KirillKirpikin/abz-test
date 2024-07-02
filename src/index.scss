@@ -14,6 +14,13 @@ body {
     color: #000;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    background-color: #f8f8f8 !important;
+    -webkit-box-shadow: 0 0 0px 1000px #f8f8f8 inset !important;
+    -webkit-text-fill-color: black !important;
+}
+
 .btn_standart {
     @apply h-[34px] w-[100px] rounded-[80px] bg-[#F4E041] text-[16px] transition-all duration-300;
     &:hover {
