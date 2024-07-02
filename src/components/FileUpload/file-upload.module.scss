@@ -3,7 +3,7 @@
 }
 
 .label {
-    @apply flex cursor-pointer items-center justify-center rounded-l-[4px] border-[1px] border-solid border-black px-[15px] py-[14px] text-[16px] font-normal transition-all duration-200;
+    @apply flex cursor-pointer max-w-[85px] items-center justify-center rounded-l-[4px] border-[1px] border-solid border-black px-[15px] py-[14px] text-[16px] font-normal transition-all duration-200;
 }
 .name_file {
     @apply w-full rounded-r-[4px] border-y-[1px] border-r-[1px] border-solid border-[#D0CFCF] px-[16px] py-[14px];

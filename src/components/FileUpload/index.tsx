@@ -18,9 +18,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ value, onChange }) => {
 
         if (files && files.length > 0) {
             const fileArray = Array.from(files);
-            // const invalidFiles = fileArray.filter(
-            //     (file) => !['image/jpeg', 'image/jpg'].includes(file.type),
-            // );
             onChange(fileArray);
         }
     };
