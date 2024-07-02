@@ -1,9 +1,10 @@
+import Spiner from '@components/Spiner';
 import UserCard from '../UserCard';
 
 import { useGetUsers } from '@hooks/useGetUsers';
 
 const UsersSection = () => {
-    const { data, fetchNextPage, hasNextPage } = useGetUsers();
+    const { data, fetchNextPage, hasNextPage, isLoading } = useGetUsers();
 
     return (
         <section className="mt-[140px]">
@@ -16,6 +17,7 @@ const UsersSection = () => {
                         )),
                     )}
                 </div>
+                {isLoading && <Spiner w='75' h='75'/>}
                 <div className="mt-[50px] flex justify-center">
                     <button
                         className="btn_standart"

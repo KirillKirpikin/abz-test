@@ -4,7 +4,7 @@ import axios from 'axios';
 import { IDataUsers } from 'types/user.type';
 
 export function useGetUsers() {
-    const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
         queryKey: ['users'],
         queryFn: async ({ pageParam }) => {
             return axios.get<IDataUsers>(
@@ -20,5 +20,5 @@ export function useGetUsers() {
         },
     });
 
-    return { data, fetchNextPage, hasNextPage };
+    return { data, fetchNextPage, hasNextPage, isLoading };
 }

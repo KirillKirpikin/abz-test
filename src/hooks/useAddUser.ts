@@ -13,7 +13,7 @@ import { toastError, toastSuccess } from '@utils/toastFunction';
 export function useAddUser(setError: UseFormSetError<IMakeUser>) {
     const queryClient = useQueryClient();
 
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationKey: ['add user'],
         mutationFn: async (newUser: FormData) =>
             axios.post(`${import.meta.env.VITE_API_URL}users`, newUser, {
@@ -32,7 +32,6 @@ export function useAddUser(setError: UseFormSetError<IMakeUser>) {
                 }),
             );
             queryClient.invalidateQueries({ queryKey: ['users'] });
-            console.log('Success data:', data);
 
             if (data.success) {
                 toastSuccess(data.message);
@@ -61,5 +60,5 @@ export function useAddUser(setError: UseFormSetError<IMakeUser>) {
         },
     });
 
-    return { mutate };
+    return { mutate, isPending };
 }

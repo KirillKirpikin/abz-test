@@ -1,0 +1,6 @@
+.circle{
+    @apply h-[300px] flex justify-center ;
+    svg{
+        @apply animate-spin;
+    }
+}

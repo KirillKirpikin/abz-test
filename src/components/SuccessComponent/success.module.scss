@@ -1,0 +1,9 @@
+.container { 
+    @apply max-w-[1170px] mx-auto ;
+    .img{
+        @apply  flex justify-center;
+        img{
+            @apply max-w-[328px];
+        }
+    }
+}
