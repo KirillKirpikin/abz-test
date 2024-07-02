@@ -1,11 +1,28 @@
+import { useEffect, useState } from 'react';
+
 import styles from './main.module.scss';
+
+import BgSmall from '../../assets/bg-min.jpg';
+import Bg from '../../assets/bg.jpg';
 
 import { scrollTo } from '@utils/scrollTo';
 
 const Main = ({ refTo }: { refTo: React.RefObject<HTMLDivElement> }) => {
+    const [imageSrc, setImageSrc] = useState(BgSmall);
+    useEffect(() => {
+        const img = new Image();
+        img.src = Bg;
+        img.onload = () => {
+            setImageSrc(Bg);
+        };
+    }, []);
+
     return (
         <div className={styles.main}>
-            <div className={styles.container}>
+            <div
+                className={styles.container}
+                style={{ background: `url(${imageSrc})` }}
+            >
                 <div className={styles.text}>
                     <h1>Test assignment for front-end developer</h1>
                     <h2>
